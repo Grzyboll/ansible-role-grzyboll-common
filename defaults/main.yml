@@ -1,0 +1,5 @@
+---
+# defaults file for vim-ansible-syntax
+env_home: "{{ ansible_env.HOME }}"
+vundle_repo: "https://github.com/VundleVim/Vundle.vim"
+bash_git_prompt: "https://github.com/magicmonty/bash-git-prompt"

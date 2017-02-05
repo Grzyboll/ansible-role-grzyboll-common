@@ -1,0 +1,52 @@
+---
+# tasks file for vim-ansible-syntax
+
+- name: Add epel repository
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  become: yes
+
+- name: install my base packets
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - vim
+    - git
+    - wget
+    - curl
+    - tmux
+  become: yes
+
+- name: install vundle from "{{ vundle_repo }}" in "{{ env_home }}"
+  git:
+    repo: "{{ vundle_repo }}.git"
+    dest: "{{ env_home }}/.vim/bundle/Vundle.vim"
+
+- name: install vim plugins in "{{ env_home }}"
+  command: vim +PluginInstall +qall
+
+- name: copy vimrc file in "{{ env_home }}"
+  template:
+    src: vimrc.conf.j2
+    dest: "{{ env_home }}/.vimrc"
+    backup: yes
+
+- name: install git prompt for bash and fish from "{{ bash_git_prompt }}" in "{{ env_home }}"
+  git: 
+    repo: "{{ bash_git_prompt }}"
+    dest: "{{ env_home }}/.bash-git-prompt"
+    depth: 1
+
+- name: Add to the ~/.bashrc in "{{ env_home }}"
+  template:
+    src: bashrc.conf.j2
+    dest: "{{ env_home }}/.bashrc"
+    backup: yes
+
+- name: reload ~/.bashrc
+  shell: source ~/.bashrc
+
+  
