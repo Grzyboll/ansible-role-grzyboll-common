@@ -40,6 +40,12 @@
     dest: "{{ env_home }}/.bash-git-prompt"
     depth: 1
 
+- name: copy tmux file in "{{ env_home }}"
+  template:
+    src: tmux.conf.j2
+    dest: "{{ env_home }}/.tmux.conf"
+    backup: yes
+
 - name: Add to the ~/.bashrc in "{{ env_home }}"
   template:
     src: bashrc.conf.j2
